@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="xy_unilivers">
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/mainframe.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 ${radians(90)}" />
+      <material name="grey">
+        <color rgba="0.4 0.4 0.4 1." />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="base_to_charriot" type="prismatic">
+    <parent link="base_link" />
+    <child link="Charriot" />
+    <origin xyz="0.036 0 0" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.178" upper="-0.03" effort="1000" velocity="0.5" />
+  </joint>
+  <link name="Charriot">
+    <visual>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/charriot.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <origin xyz="0.075 0.0 0.0" rpy="${radians(-90)} 0 0" />
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="base_to_switch1" type="fixed">
+    <parent link="base_link" />
+    <child link="switch1" />
+    <origin xyz="${0.003-0.08} ${-0.051} -0.002" rpy="${radians(90)} ${radians(-90)} 0" />
+  </joint>
+
+  <link name="switch1">
+    <visual>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <material name="light green">
+        <color rgba="0.375 0.948 0.538 1.0" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="base_to_switch2" type="fixed">
+    <parent link="base_link" />
+    <child link="switch2" />
+    <origin xyz="${0.089+0.005} ${-0.051} ${-0.002}"
+      rpy="${radians(90)} ${radians(90)} ${radians(0)}" />
+  </joint>
+
+  <link name="switch2">
+    <visual>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <material name="light blue">
+        <color rgba="0.064 0.799 0.766 1.0" />
+      </material>
+    </visual>
+  </link>
+
+</robot>
