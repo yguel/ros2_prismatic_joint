@@ -1,0 +1,7 @@
+xy_unilivers_joint_velocity_controller/commands:
+  type: std_msgs/Float64MultiArray
+  base_to_charriot:
+    min: -5500.0
+    max: 5500.0
+    to: data[0]
+    default: 0.0

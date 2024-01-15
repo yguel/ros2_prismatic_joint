@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!-- xy_unilivers manipulator -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="xy_unilivers">
+
+    <!-- Import xy_unilivers urdf file -->
+    <xacro:include filename="$(find xy_unilivers_description)/urdf/xy_unilivers.urdf.xacro" />
+
+    <!-- Import xy_unilivers materials file -->
+    <!--
+    <xacro:include filename="$(find xy_unilivers_description)/config/materials.urdf" />
+    -->
+
+    <!-- Import xy_unilivers ros2_control description -->
+    <xacro:include
+        filename="$(find xy_unilivers_description)/ros2_control/xy_unilivers.ros2_control.xacro" />
+
+    <!--
+    <xacro:include
+        filename="$(find xy_unilivers_description)/ros2_control/xy_unilivers_states.ros2_control.xacro" />
+    <xacro:include
+        filename="$(find xy_unilivers_description)/ros2_control/xy_unilivers_limit_switches.ros2_control.xacro" />
+    -->   
+
+    <!-- Import all Gazebo-customization elements -->
+    <!--
+    <xacro:include filename="$(find xy_unilivers_description)/gazebo/xy_unilivers.gazebo.xacro" />
+    -->
+</robot>

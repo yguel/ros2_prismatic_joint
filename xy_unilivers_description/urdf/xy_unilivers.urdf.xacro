@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="xy_unilivers">
 
+  <link name="world" />
+
+  <joint name="world_to_base_link" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+  </joint>
+
   <link name="base_link">
     <visual>
       <geometry>
@@ -16,12 +23,15 @@
 
   <joint name="base_to_charriot" type="prismatic">
     <parent link="base_link" />
-    <child link="Charriot" />
-    <origin xyz="0.036 0 0" rpy="0 0 0" />
+    <child link="charriot" />
+    <origin xyz="-0.104 0 0" rpy="0 0 0" />
     <axis xyz="1 0 0" />
-    <limit lower="-0.178" upper="-0.03" effort="1000" velocity="0.5" />
+    <limit lower="-0.037" upper="0.110" effort="1000" velocity="0.5" />
   </joint>
-  <link name="Charriot">
+
+
+
+  <link name="charriot">
     <visual>
       <geometry>
         <mesh filename="package://xy_unilivers_description/meshes/charriot.stl"
@@ -32,6 +42,17 @@
         <color rgba="1.0 1.0 1.0 1.0" />
       </material>
     </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/charriot.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+    <!--TODO provides accurate values for the inertial tags = following values are arbitrary-->
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3" />
+    </inertial>
   </link>
 
   <joint name="base_to_switch1" type="fixed">
@@ -51,6 +72,12 @@
         <color rgba="0.375 0.948 0.538 1.0" />
       </material>
     </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
   </link>
 
   <joint name="base_to_switch2" type="fixed">
@@ -71,6 +98,11 @@
         <color rgba="0.064 0.799 0.766 1.0" />
       </material>
     </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
   </link>
-
 </robot>
