@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <gazebo reference="base">
+        <visual>
+            <material>
+                <ambient>0.4 0.4 0.4 1.0</ambient>
+                <diffuse>0.4 0.4 0.4 1.0</diffuse>
+                <specular>0.5 0.5 0.5 1.0</specular>
+            </material>
+        </visual>
+    </gazebo>
+
+    <gazebo reference="charriot">
+        <material>
+            <ambient> 1.0 1.0 1.0 1.0</ambient>
+            <diffuse> 1.0 1.0 1.0 1.0</diffuse>
+            <specular>0.5 0.5 0.5 1.0</specular>
+        </material>
+    </gazebo>
+
+    <gazebo reference="switch1">
+        <material>
+            <ambient> 0.375 0.948 0.538 1.0</ambient>
+            <diffuse> 0.375 0.948 0.538 1.0</diffuse>
+            <specular>0.5 0.5 0.5 1.0</specular>
+        </material>
+    </gazebo>
+
+    <gazebo reference="switch2">
+        <material>
+            <ambient> 0.064 0.799 0.766 1.0</ambient>
+            <diffuse> 0.064 0.799 0.766 1.0</diffuse>
+            <specular>0.5 0.5 0.5 1.0</specular>
+        </material>
+    </gazebo>
+
+</robot>

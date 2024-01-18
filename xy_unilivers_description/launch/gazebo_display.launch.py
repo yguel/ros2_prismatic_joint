@@ -1,7 +1,6 @@
 """
 Examples to run ros2 with this script:
-  1. ros2 launch xy_unilivers_description display.launch.py
-  2. ros2 launch xy_unilivers_description display.launch.py simu:=false
+  1. ros2 launch xy_unilivers_description gazebo_display.launch.py
 """
 import os
 from ament_index_python.packages import get_package_share_directory
@@ -33,40 +32,25 @@ def generate_launch_description():
         xacro_exe, ' ', model_path
     ])
 
-    urdf_robot_desc = {'robot_description': robot_description_content}
-
     ################
     ## Simulation ##
     ################
-
-    simu = LaunchConfiguration('simu')
-
-    simu_arg = DeclareLaunchArgument(name='simu', 
-        default_value='true', choices=['true', 'false'], 
-        description="""Flag to enable simulation via gazebo. It will make the following actions:
-         - use of simulated time
-         - command of the joint via joint_state_publisher_gui
-        """)
     
-    # get_simu_mode = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([pkg_path, '/launch/display.launch.py']),
-    #     launch_arguments={
-    #         'simu': LaunchConfiguration('simu')}.items(),
-    #         condition=IfCondition(simu)
-    #                               )
-    
-    # Check if we're told to use sim time
-    use_sim_time = { 'use_sim_time' : simu }
 
     ###########################
     ## Robot State Publisher ##
     ###########################
 
+    rsp_params = {
+        'robot_description': robot_description_content,
+        'use_sim_time': True
+    }
+
     robot_state_pub_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='both',
-        parameters=[urdf_robot_desc, use_sim_time], # add other parameters here if required
+        parameters=[rsp_params], # add other parameters here if required
     )
 
     ###########
@@ -87,64 +71,31 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file],
     )
 
-
-    ###############################
-    ## Joint State Publisher GUI ##
-    ###############################
-
-    jsp_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        output='screen',
-        parameters=[urdf_robot_desc, use_sim_time], # add other parameters here if required
-        condition=IfCondition(simu)
-    )
-
-    ###########################
-    ## Joint State Publisher ##
-    ###########################
-
-    jsp_node = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        output='screen',
-        parameters=[urdf_robot_desc, use_sim_time], # add other parameters here if required
-        condition=UnlessCondition(simu)
-    )
-
     #######################
     ## Gazebo Simulation ##
     #######################
-    """
     # Include the Gazebo launch file, provided by the gazebo_ros package
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
-                    launch_arguments={'verbose': 'false',  'use_sim_time': 'true' }.items(),
-                    condition = IfCondition(simu)
-             )
+                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')])
+                    )
  
     # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
     spawn_entity = Node(package='gazebo_ros',
                          executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description', '-entity', 'xy_unilivers'],
-                        output='screen',
-                        condition=IfCondition(simu)
+                        output='screen'
     )
-    """
 
 
     #########################
     ## Collect all actions ##
     #########################
     actions = [
-        simu_arg, # simulation argument
-        #gazebo, # gazebo simulation
+        gazebo, # gazebo simulation
         robot_state_pub_node, # robot state publisher
-        jsp_gui_node, # joint state publisher gui IF simu
-        jsp_node, # joint state publisher UNLESS simu
         rviz_node, # rviz2
-        #spawn_entity # spawn entity
+        spawn_entity # spawn entity
         ]
 
     #######################

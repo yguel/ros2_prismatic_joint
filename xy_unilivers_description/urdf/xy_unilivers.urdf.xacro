@@ -3,32 +3,48 @@
 
   <link name="world" />
 
-  <joint name="world_to_base_link" type="fixed">
+  <!-- Used for fixing robot -->
+  <gazebo reference="world">
+    <static>true</static>
+  </gazebo>
+
+  <joint name="world_to_base" type="fixed">
     <parent link="world" />
-    <child link="base_link" />
+    <child link="base" />
+    <origin xyz="0. 0. 0.25" rpy="0 0 0" />
   </joint>
 
-  <link name="base_link">
+  <link name="base">
     <visual>
       <geometry>
         <mesh filename="package://xy_unilivers_description/meshes/mainframe.stl"
           scale="0.001 0.001 0.001" />
       </geometry>
-      <origin xyz="0 0 0" rpy="0 0 ${radians(90)}" />
+      <origin xyz="0 0 0.0" rpy="0 0 ${radians(90)}" />
       <material name="grey">
         <color rgba="0.4 0.4 0.4 1." />
       </material>
     </visual>
+    <!--TODO provides accurate values for the inertial tags = following values are arbitrary-->
+    <inertial>
+      <mass value="10" />
+      <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3" />
+    </inertial>
   </link>
 
+  <gazebo reference="base">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+
+
   <joint name="base_to_charriot" type="prismatic">
-    <parent link="base_link" />
+    <parent link="base" />
     <child link="charriot" />
     <origin xyz="-0.104 0 0" rpy="0 0 0" />
     <axis xyz="1 0 0" />
     <limit lower="-0.037" upper="0.110" effort="1000" velocity="0.5" />
   </joint>
-
 
 
   <link name="charriot">
@@ -42,21 +58,44 @@
         <color rgba="1.0 1.0 1.0 1.0" />
       </material>
     </visual>
-    <collision>
+    <collision name="charriot_collision">
       <geometry>
         <mesh filename="package://xy_unilivers_description/meshes/charriot.stl"
           scale="0.001 0.001 0.001" />
       </geometry>
+      <origin xyz="0.075 0.0 0.0" rpy="${radians(-90)} 0 0" />
+      <surface>
+        <friction> <ode> <mu>mu1</mu> <mu2>m2</mu2> </ode> </friction>
+        <contact>
+          <!--
+          <collide_bitmask>0x10000</collide_bitmask>
+          -->
+          <ode> <kp>kp</kp> <kd>kd</kd> </ode>
+        </contact>
+      </surface>
     </collision>
     <!--TODO provides accurate values for the inertial tags = following values are arbitrary-->
     <inertial>
       <mass value="1" />
-      <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3" />
+      <origin xyz="22.234152e-3 -25.151773e-3 -1.542117e-3" />
+      <inertia ixx="6737.72608" ixy="99.53903" ixz="-137.44316" iyy="13064.48256" iyz="79.50954" izz="6989.75104" />
     </inertial>
   </link>
 
+  <gazebo reference="charriot">
+    <gravity>true</gravity>
+    <material>Gazebo/White</material>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.5</maxVel>
+    <minDepth>0.0005</minDepth>
+  </gazebo>
+
+
   <joint name="base_to_switch1" type="fixed">
-    <parent link="base_link" />
+    <parent link="base" />
     <child link="switch1" />
     <origin xyz="${0.003-0.08} ${-0.051} -0.002" rpy="${radians(90)} ${radians(-90)} 0" />
   </joint>
@@ -72,16 +111,42 @@
         <color rgba="0.375 0.948 0.538 1.0" />
       </material>
     </visual>
-    <collision>
+    <collision name="switch1_left_collision">
       <geometry>
         <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
           scale="0.001 0.001 0.001" />
       </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <surface>
+        <friction> <ode> <mu>mu1</mu> <mu2>m2</mu2> </ode> </friction>
+        <contact>
+          <!--
+          <collide_bitmask>0x10000</collide_bitmask>
+          -->
+          <ode> <kp>kp</kp> <kd>kd</kd> </ode>
+        </contact>
+      </surface>
     </collision>
+    <!--TODO provides accurate values for the inertial tags = following values are arbitrary-->
+    <inertial>
+      <mass value="0.1" />
+      <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3" />
+    </inertial>
   </link>
 
+  <gazebo reference="switch1">
+    <material>Gazebo/Green</material>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.5</maxVel>
+    <minDepth>0.0005</minDepth>
+  </gazebo>
+
+
   <joint name="base_to_switch2" type="fixed">
-    <parent link="base_link" />
+    <parent link="base" />
     <child link="switch2" />
     <origin xyz="${0.089+0.005} ${-0.051} ${-0.002}"
       rpy="${radians(90)} ${radians(90)} ${radians(0)}" />
@@ -98,11 +163,111 @@
         <color rgba="0.064 0.799 0.766 1.0" />
       </material>
     </visual>
-    <collision>
+    <collision name="switch2_right_collision">
       <geometry>
         <mesh filename="package://xy_unilivers_description/meshes/switch.stl"
           scale="0.001 0.001 0.001" />
       </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <surface>
+        <friction> <ode> <mu>mu1</mu> <mu2>m2</mu2> </ode> </friction>
+        <contact>
+          <!--
+          <collide_bitmask>0x10000</collide_bitmask>
+          -->
+          <ode> <kp>kp</kp> <kd>kd</kd> </ode>
+        </contact>
+      </surface>
     </collision>
+    <!--TODO provides accurate values for the inertial tags = following values are arbitrary-->
+    <inertial>
+      <mass value="0.1" />
+      <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3" />
+    </inertial>
   </link>
+
+  <gazebo reference="switch2">
+    <material>Gazebo/Blue</material>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.5</maxVel>
+    <minDepth>0.0005</minDepth>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_joint_state_publisher"
+            filename="libgazebo_ros_joint_state_publisher.so">
+      <update_rate>20</update_rate>
+      <joint_name>base_to_charriot</joint_name>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_joint_pose_trajectory"
+        filename="libgazebo_ros_joint_pose_trajectory.so">
+        <update_rate>20</update_rate>
+    </plugin>
+  </gazebo>
+
+
+  <!--contact sensor charriot-->
+  <gazebo reference="charriot">
+    <sensor name="switch1_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <always_on>true</always_on>
+      <updateRate>1</updateRate>
+      <contact>
+        <collision>charriot_collision_collision</collision>
+      </contact>
+      <plugin name="charriot_bumper_plugin" filename="libgazebo_ros_bumper.so">
+        <ros>
+          <namespace>contact_sensor</namespace>
+          <remapping>bumper_states:=bumper_charriot</remapping>
+        </ros>
+        <frameName>charriot</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!--contact sensor switch1-->
+  <gazebo reference="switch1">
+    <sensor name="switch1_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <always_on>true</always_on>
+      <updateRate>1</updateRate>
+      <contact>
+        <collision>base_fixed_joint_lump__switch1_left_collision_collision</collision>
+      </contact>
+      <plugin name="switch1_bumper_plugin" filename="libgazebo_ros_bumper.so">
+        <ros>
+          <namespace>contact_sensor</namespace>
+          <remapping>bumper_states:=bumper_switch1_left</remapping>
+        </ros>
+        <frameName>switch1</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!--contact sensor switch2-->
+  <gazebo reference="switch2">
+    <sensor name="switch2_contactsensor_sensor" type="contact">
+      <selfCollide>true</selfCollide>
+      <always_on>true</always_on>
+      <updateRate>1</updateRate>
+      <contact>
+        <collision>base_fixed_joint_lump__switch2_right_collision_collision_1</collision>
+      </contact>
+      <plugin name="switch2_bumper_plugin" filename="libgazebo_ros_bumper.so">
+        <ros>
+          <namespace>contact_sensor</namespace>
+          <remapping>bumper_states:=bumper_switch2_right</remapping>
+        </ros>
+        <bumperTopicName>switch2_right_contact</bumperTopicName>
+        <frameName>switch2</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
 </robot>

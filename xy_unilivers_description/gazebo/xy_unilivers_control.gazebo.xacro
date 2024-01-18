@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+    <!-- ros_control plugin -->
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>$(find xy_unilivers_description)/config/xy_unilivers_states_controllers.yaml</parameters>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+      </plugin>
+    </gazebo>
+    <!-- Used for fixing robot -->
+    <gazebo reference="world">
+        <static>true</static>
+    </gazebo>
+</robot>

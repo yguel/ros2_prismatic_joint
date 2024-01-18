@@ -9,6 +9,7 @@
 
   <depend>ethercat_driver_ros2</depend>
 
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
@@ -17,8 +18,13 @@
   <exec_depend>xacro</exec_depend>
   <exec_depend>urdf</exec_depend>
   <exec_depend>urdf_launch</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_model_path="${prefix}/.."/>
   </export>
 </package>
