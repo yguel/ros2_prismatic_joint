@@ -85,10 +85,12 @@
   </gazebo>
 
 
-  <joint name="base_to_switch1" type="fixed">
+  <joint name="base_to_switch1" type="revolute">
     <parent link="base" />
     <child link="switch1" />
     <origin xyz="${0.003-0.08} ${-0.051} -0.002" rpy="${radians(90)} ${radians(-90)} 0" />
+    <axis xyz="0 0 1" />
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
   </joint>
 
   <link name="switch1">
@@ -127,11 +129,13 @@
   </gazebo>
 
 
-  <joint name="base_to_switch2" type="fixed">
+  <joint name="base_to_switch2" type="revolute">
     <parent link="base" />
     <child link="switch2" />
     <origin xyz="${0.089+0.005} ${-0.051} ${-0.002}"
       rpy="${radians(90)} ${radians(90)} ${radians(0)}" />
+    <axis xyz="0 0 1" />
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
   </joint>
 
   <link name="switch2">
@@ -172,7 +176,7 @@
   <gazebo>
     <plugin name="gazebo_ros_joint_state_publisher"
             filename="libgazebo_ros_joint_state_publisher.so">
-      <update_rate>20</update_rate>
+      <update_rate>1</update_rate>
       <joint_name>base_to_charriot</joint_name>
     </plugin>
   </gazebo>
@@ -180,65 +184,67 @@
   <gazebo>
     <plugin name="gazebo_ros_joint_pose_trajectory"
         filename="libgazebo_ros_joint_pose_trajectory.so">
-        <update_rate>20</update_rate>
+        <update_rate>1</update_rate>
     </plugin>
   </gazebo>
 
 
   <!--contact sensor charriot-->
   <gazebo reference="charriot">
-    <sensor name="switch1_contactsensor_sensor" type="contact">
-      <selfCollide>true</selfCollide>
+    <self_collide>1</self_collide>
+    <sensor name="charriot_contactsensor_sensor" type="contact">
       <always_on>true</always_on>
-      <updateRate>1</updateRate>
       <contact>
         <collision>charriot_collision_collision</collision>
       </contact>
+      <update_rate>1</update_rate>
       <plugin name="charriot_bumper_plugin" filename="libgazebo_ros_bumper.so">
         <ros>
           <namespace>contact_sensor</namespace>
           <remapping>bumper_states:=bumper_charriot</remapping>
         </ros>
-        <frameName>charriot</frameName>
+        <frame_name>charriot</frame_name>
       </plugin>
     </sensor>
   </gazebo>
 
   <!--contact sensor switch1-->
   <gazebo reference="switch1">
+    <self_collide>1</self_collide>
     <sensor name="switch1_contactsensor_sensor" type="contact">
-      <selfCollide>true</selfCollide>
       <always_on>true</always_on>
-      <updateRate>1</updateRate>
       <contact>
-        <collision>base_fixed_joint_lump__switch1_left_collision_collision</collision>
+        <collision>switch1_left_collision_collision</collision>
       </contact>
+      <update_rate>1</update_rate>
       <plugin name="switch1_bumper_plugin" filename="libgazebo_ros_bumper.so">
         <ros>
           <namespace>contact_sensor</namespace>
           <remapping>bumper_states:=bumper_switch1_left</remapping>
         </ros>
-        <frameName>switch1</frameName>
+        <frame_name>switch1</frame_name>
       </plugin>
     </sensor>
   </gazebo>
 
   <!--contact sensor switch2-->
   <gazebo reference="switch2">
+    <self_collide>1</self_collide>
     <sensor name="switch2_contactsensor_sensor" type="contact">
-      <selfCollide>true</selfCollide>
       <always_on>true</always_on>
-      <updateRate>1</updateRate>
       <contact>
-        <collision>base_fixed_joint_lump__switch2_right_collision_collision_1</collision>
+        <collision>switch2_right_collision_collision</collision>
       </contact>
+      <update_rate>1</update_rate>
       <plugin name="switch2_bumper_plugin" filename="libgazebo_ros_bumper.so">
         <ros>
           <namespace>contact_sensor</namespace>
           <remapping>bumper_states:=bumper_switch2_right</remapping>
         </ros>
+        <!--
         <bumperTopicName>switch2_right_contact</bumperTopicName>
-        <frameName>switch2</frameName>
+        -->
+        <frame_name>switch2</frame_name>
       </plugin>
     </sensor>
   </gazebo>
