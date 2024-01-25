@@ -75,10 +75,13 @@ def generate_launch_description():
     ## Gazebo Simulation ##
     #######################
     # Include the Gazebo launch file, provided by the gazebo_ros package
+    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+    gazebo_launch_file = os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
     gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')])
-                    )
+                PythonLaunchDescriptionSource([gazebo_launch_file])
+                )
+    
+
  
     # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
     spawn_entity = Node(package='gazebo_ros',
@@ -87,6 +90,24 @@ def generate_launch_description():
                         output='screen'
     )
 
+    #######################
+    ## Command interface ##
+    #######################
+    cmd_slider_cfg = PathJoinSubstitution(
+        [
+            FindPackageShare('xy_unilivers_bringup'),
+            'config',
+            "linear_velocity_slider.yaml",
+        ]
+    )
+
+    cmd_slider_node = Node(
+        package='slider_publisher', 
+        executable='slider_publisher', 
+        name='slider_publisher',
+        parameters=[{'rate': 10.0}],
+        arguments = [cmd_slider_cfg])
+
 
     #########################
     ## Collect all actions ##
@@ -94,6 +115,7 @@ def generate_launch_description():
     actions = [
         gazebo, # gazebo simulation
         robot_state_pub_node, # robot state publisher
+        cmd_slider_node, # slider publisher
         rviz_node, # rviz2
         spawn_entity # spawn entity
         ]
@@ -102,27 +124,3 @@ def generate_launch_description():
     ## LaunchDescription ##
     #######################
     return LaunchDescription(actions)
-
-
-    # rviz_config_path = PathJoinSubstitution([xy_unilivers_description_path, 'rviz', 'xy_unilivers.rviz'])
-
-   
-    # ld.add_action(simu_arg)
-
-    # ld.add_action(IncludeLaunchDescription(
-    #     # Here "display.launch.py" refers to the script of the urdf_launch package see https://github.com/ros/urdf_launch/blob/main/launch/display.launch.py
-    #     PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
-    #     launch_arguments={
-    #         'urdf_package': 'xy_unilivers_description',
-    #         'urdf_package_path': model_path,
-    #         'rviz_config': rviz_config_path,
-    #         'jsp_gui': LaunchConfiguration('simu')}.items()
-    # ))
-
-    # ld.add_action(IncludeLaunchDescription(
-    #     PathJoinSubstitution([FindPackageShare('gazebo_ros'), 'launch', 'gazebo.launch.py']),
-    #     launch_arguments={
-    #         'use_sim_time': LaunchConfiguration('simu')}.items()
-    # )
-
-    # return ld
