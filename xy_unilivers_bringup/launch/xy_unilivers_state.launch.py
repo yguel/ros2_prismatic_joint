@@ -104,23 +104,6 @@ def generate_launch_description():
         arguments=['joint_state_broadcaster'],
     )
 
-    """
-    slider_config = PathJoinSubstitution(
-        [
-            FindPackageShare('scara_bringup'),
-            'config',
-            'scara_vel_sp_config.yaml',
-        ]
-    )
-
-    slider_node = Node(
-        package='slider_publisher', 
-        executable='slider_publisher', 
-        name='slider_publisher',
-        parameters=[{'rate': 10.0}],
-        arguments = [slider_config])
-    """
-
     #############################
     # Launch all the nodes
     #############################

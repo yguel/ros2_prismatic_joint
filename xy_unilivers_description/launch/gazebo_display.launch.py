@@ -15,7 +15,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    # Specify the name of the package and path to xacro file within the package
+    # Specify the name of the robot description package
     pkg_name = 'xy_unilivers_description'
     pkg_path = FindPackageShare(pkg_name)
 
@@ -23,6 +23,7 @@ def generate_launch_description():
     ## URDF ##
     ##########
     
+    # Specify the path to the xacro file within the description package
     model_path = PathJoinSubstitution([pkg_path,'urdf', 'xy_unilivers.urdf.xacro'])
 
     xacro_exe = PathJoinSubstitution([FindExecutable(name='xacro')])
