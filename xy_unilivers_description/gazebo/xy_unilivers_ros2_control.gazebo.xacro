@@ -11,5 +11,11 @@
             <state_interface name="effort" />
             <command_interface name="velocity" />
         </joint>
+        <sensor name="switch1_contact_sensor">
+            <state_interface name="limit_switch_left" />
+        </sensor>
+        <sensor name="switch2_contact_sensor">
+            <state_interface name="limit_switch_right" />
+        </sensor>
     </ros2_control>
 </robot>

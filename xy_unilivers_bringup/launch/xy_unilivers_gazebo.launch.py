@@ -150,6 +150,7 @@ def generate_launch_description():
         cmd_slider_node, # slider publisher
         rviz_node, # rviz2
         spawn_entity,
+        joint_state_broadcaster, # joint state broadcaster
         robot_controller_spawner
         ]
 
