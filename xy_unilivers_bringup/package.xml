@@ -30,6 +30,7 @@
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>gazebo_ros_pkgs</exec_depend>
   <exec_depend>slider_publisher</exec_depend>
+  <exec_depend>secured_1d_velocity_controller</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
