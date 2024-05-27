@@ -12,14 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Launch file for Gazebo simulation using the plugin gazebo_contact_ros2_control of the xy_unilivers robot
-
-import os
-from ament_index_python import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -30,14 +24,13 @@ def generate_launch_description():
     # Specify the name of the robot description package
     pkg_name = 'xy_unilivers_description'
     pkg_path = FindPackageShare(pkg_name)
-    
 
-    #################
-    ## GAZEBO URDF ##
-    #################
-    
+    ##########
+    ## URDF ##
+    ##########
+
     # Specify the path to the xacro file within the description package
-    model_path = PathJoinSubstitution([pkg_path,'config', 'xy_unilivers_gazebo_secured.config.xacro'])
+    model_path = PathJoinSubstitution([pkg_path,'config', 'xy_unilivers_secured.config.xacro'])
 
     xacro_exe = PathJoinSubstitution([FindExecutable(name='xacro')])
 
@@ -46,18 +39,13 @@ def generate_launch_description():
         xacro_exe, ' ', model_path
     ])
 
-    ################
-    ## Simulation ##
-    ################
-    
-
     ###########################
     ## Robot State Publisher ##
     ###########################
 
     rsp_params = {
         'robot_description': robot_description_content,
-        'use_sim_time': True
+        'use_sim_time': False
     }
 
     robot_state_pub_node = Node(
@@ -87,6 +75,19 @@ def generate_launch_description():
         arguments=['xy_unilivers_secured_1d_velocity_controller'],
     )
 
+    # Define the path to the robot state controller configuration file
+    controller_cfg = 'xy_unilivers_secured_controllers.yaml'
+    robot_controllers_cfg = PathJoinSubstitution(
+        [FindPackageShare('xy_unilivers_description'),'config',controller_cfg,]
+    )
+
+    controller_manager_node = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[rsp_params, robot_controllers_cfg],
+        output='both',
+    )
+
     ###########
     ## RVIZ2 ##
     ###########
@@ -106,30 +107,13 @@ def generate_launch_description():
     )
 
     #######################
-    ## Gazebo Simulation ##
-    #######################
-    # Include the Gazebo launch file, provided by the gazebo_ros package
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
-    gazebo_launch_file = os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
-    gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([gazebo_launch_file])
-                )
-    
-    # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
-    spawn_entity = Node(package='gazebo_ros',
-                         executable='spawn_entity.py',
-                        arguments=['-topic', 'robot_description', '-entity', 'xy_unilivers'],
-                        output='screen'
-    )
-
-    #######################
     ## Command interface ##
     #######################
     cmd_slider_cfg = PathJoinSubstitution(
         [
             FindPackageShare('xy_unilivers_bringup'),
             'config',
-            "xy_unilivers_linear_secured_velocity_joint_config.yaml",
+            "xy_unilivers_linear_secured_velocity_rpm_joint_config.yaml",
         ]
     )
 
@@ -145,13 +129,12 @@ def generate_launch_description():
     ## Collect all actions ##
     #########################
     actions = [
-        gazebo, # gazebo simulation
         robot_state_pub_node, # robot state publisher
+        controller_manager_node, # controller manager
         cmd_slider_node, # slider publisher
         rviz_node, # rviz2
-        spawn_entity,
         joint_state_broadcaster, # joint state broadcaster
-        robot_controller_spawner
+        robot_controller_spawner,
         ]
 
     #######################

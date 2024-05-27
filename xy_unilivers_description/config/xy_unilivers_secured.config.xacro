@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- xy_unilivers manipulator -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="xy_unilivers">
+
+    <!-- Import xy_unilivers urdf file -->
+    <xacro:include filename="$(find xy_unilivers_description)/urdf/xy_unilivers_gazebo_ros2_control_secured.urdf.xacro" />
+
+    <!-- Import xy_unilivers ros2_control description -->
+    <xacro:include
+        filename="$(find xy_unilivers_description)/ros2_control/xy_unilivers_secured.ros2_control.xacro" />
+</robot>

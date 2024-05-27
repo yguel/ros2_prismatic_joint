@@ -1,0 +1,7 @@
+xy_unilivers_secured_1d_velocity_controller/reference_velocity:
+  type: std_msgs/Float64
+  base_to_charriot:
+    min: -5500.0
+    max: 5500.0
+    to: data
+    default: 0.0
