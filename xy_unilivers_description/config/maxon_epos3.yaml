@@ -46,7 +46,7 @@ rpdo: # RxPDO = receive PDO Mapping, master (out) to slave (in) (MOSI)
           type: int8,
           command_interface: mode_of_operation,
           default: 9,
-        } # Mode of operation
+        } # Mode of operation. Modes are: position (8), velocity (9), effort (10) and homing (6)
       - { index: 0x2078, sub_index: 1, type: uint16, default: 0 } # Digital Output Functionalities
       - { index: 0x60b8, sub_index: 0, type: uint16, default: 0 } # Touch Probe Function
 tpdo: # TxPDO = transmit PDO Mapping, slave (out) to master (in) (MISO)

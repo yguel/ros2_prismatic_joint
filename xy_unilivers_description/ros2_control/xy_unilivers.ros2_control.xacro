@@ -43,7 +43,11 @@
                 <param name="position">0</param>
                 <!-- Available modes of operation = position 8, velocity 9, effort 10, homing 6 -->
                 <param name="mode_of_operation">9</param>
+                <!-- epos3 
                 <param name="slave_config">$(find xy_unilivers_description)/config/maxon_epos3.yaml</param>
+                -->
+                <!-- epos4 -->
+                <param name="slave_config">$(find xy_unilivers_description)/config/maxon_epos4_50_5.yaml</param>
             </ec_module>
         </joint>
     </ros2_control>

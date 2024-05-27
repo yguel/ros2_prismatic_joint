@@ -182,9 +182,9 @@
     </plugin>
   </gazebo>
 
-  <!-- gazebo ros2_control plugin -->
+  <!-- gazebo "contact" ros2_control plugin -->
   <gazebo>
-    <plugin filename="libgazebo_ros2_control_contact.so" name="gazebo_ros2_control">
+    <plugin filename="libgazebo_contact_ros2_control.so" name="gazebo_contact_ros2_control">
       <robot_param>robot_description</robot_param>
       <robot_param_node>robot_state_publisher</robot_param_node>
       <parameters>$(find xy_unilivers_description)/config/xy_unilivers_controllers.yaml</parameters>

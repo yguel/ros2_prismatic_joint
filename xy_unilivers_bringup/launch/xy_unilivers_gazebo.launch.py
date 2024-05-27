@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Launch file for Gazebo simulation using the plugin gazebo_ros2_control of the xy_unilivers robot
+# Launch file for Gazebo simulation using the plugin gazebo_contact_ros2_control of the xy_unilivers robot
 
 import os
 from ament_index_python import get_package_share_directory
