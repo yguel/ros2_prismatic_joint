@@ -1,0 +1,3 @@
+- git: {local-name: src/secured_1d_velocity_controller, uri: https://github.com/yguel/secured_1d_velocity_controller.git, version: proto00_calibrate_and_check}
+- git: {local-name: src/gazebo_contact_ros2_control, uri: https://github.com/yguel/gazebo_contact_ros2_control.git, version: humble }
+- git: {local-name: src/ethercat_driver_ros2, uri: https://github.com/ICube-Robotics/ethercat_driver_ros2.git, version: main }

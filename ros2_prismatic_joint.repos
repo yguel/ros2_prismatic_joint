@@ -1,0 +1,13 @@
+repositories:
+  secured_1d_velocity_controller:
+    type: git
+    url: https://github.com/yguel/secured_1d_velocity_controller.git
+    version: proto00_calibrate_and_check
+  gazebo_contact_ros2_control:
+    type: git
+    url: https://github.com/yguel/gazebo_contact_ros2_control.git
+    version: humble
+  ethercat_driver_ros2:
+    type: git
+    url: https://github.com/ICube-Robotics/ethercat_driver_ros2.git
+    version: main
