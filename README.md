@@ -1,12 +1,25 @@
 # Install
 1. first create a ros2 workspace
+```bash
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws
+```
 2. clone the current repository into the ''src'' folder
-3. install the dependencies by running the following commands:
+```bash
+cd src
+git clone https://github.com/yguel/ihu_prismatic_joint.git
+```
+3. checkout the branch gazebo-classic
+```bash
+git checkout gazebo-classic
+cd ../..
+```
+1. install the dependencies by running the following commands:
 ```bash
 source /opt/ros/humble/setup.bash
 vcs import src < src/ihu_prismatic_joint/ros2_prismatic_joint.repos
 ```
-4. build the workspace by running the following commands from the root of the workspace:
+1. build the workspace by running the following commands from the root of the workspace:
 ```bash
 source /opt/ros/humble/setup.bash
 rosdep install --ignore-src --from-paths . -y -r
@@ -30,7 +43,7 @@ sudo /etc/init.d/ethercat start
 Start the real robot control:
 ```bash
 source install/setup.bash
-ros2 launch ros2 launch xy_unilivers_bringup xy_unilivers.launch.py
+ros2 launch xy_unilivers_bringup xy_unilivers.launch.py
 ```
 
 # On the real robot with security enabled (secured mode) by limit switches
@@ -42,5 +55,5 @@ sudo /etc/init.d/ethercat start
 Start the real robot control:
 ```bash
 source install/setup.bash
-ros2 launch ros2 launch xy_unilivers_bringup secured_ctrl_display_launch.py
+ros2 launch xy_unilivers_bringup secured_ctrl_display_launch.py
 ```
