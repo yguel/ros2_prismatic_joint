@@ -11,7 +11,7 @@ git clone https://github.com/yguel/ihu_prismatic_joint.git
 ```
 3. checkout the branch gazebo-classic
 ```bash
-git checkout gazebo-classic
+git checkout humble-gazebo-classic
 cd ../..
 ```
 1. install the dependencies by running the following commands:
