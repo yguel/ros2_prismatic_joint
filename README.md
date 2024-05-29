@@ -7,7 +7,7 @@ cd ~/ros2_ws
 2. clone the current repository into the ''src'' folder
 ```bash
 cd src
-git clone https://github.com/yguel/ihu_prismatic_joint.git
+git clone https://github.com/yguel/ros2_prismatic_joint.git
 ```
 3. checkout the branch gazebo-classic
 ```bash
